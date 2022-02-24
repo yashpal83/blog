@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+
+
+{% block title %}Reading Post{% endblock title %}
+
+
+{% block body %}
+
+{% load humanize %}
+
+{% load static %}
+
+<div class="container my-5">
+    <div class="row g-5">
+        <div class="col-md-12">
+            <article class="blog-post">
+                <h2 class="blog-post-title mt-5">{{post.title}}</h2>
+                <p class="blog-post-meta">{{post.datetime|naturaltime}} by <a href="/about">{{post.author}} </a></p>
+                <div class="col-md-4 p-3">
+                    
+                </div>
+            </div>
+                <p>{{post.content}} </p>
+            </article>
+            
+    </div>
+</div>
+
+<div class="container">
+    <h3>Comments</h3>
+
+    {% if user.is_authenticated %}
+    <form action="/blog/comments" method="post"> {% csrf_token %}
+        <div class="mb-3">
+            <label for="comment" class="form-label">Write your Comment below.</label>
+            <input type="text" class="form-control" name="comment" id="comment" aria-describedby="emailHelp"
+                placeholder="Enter your comment here" required>
+            <input type="hidden" name="postnum" value="{{post.num}}">
+        </div>
+        <button type="submit" class="btn btn-primary">Post Comment</button>
+    </form>
+    {% else %}
+    <form action="/blog/comments" method="post"> {% csrf_token %}
+        <div class="mb-3">
+            <label for="comment" class="form-label">Write your Comment below.</label>
+            <input type="text" class="form-control" name="comment" id="comment" aria-describedby="emailHelp"
+                placeholder="Enter your comment here" required>
+            <input type="hidden" name="postnum" value="{{post.num}}">
+        </div>
+        <button type="submit" class="btn btn-primary" disabled>Login to Comment</button>
+    </form>
+
+    {% endif %}
+
+
+    {% for comment in comments %}
+    <div class="row mx-0 my-3">
+        <div class="col-1"><img class="w-100" src="/static/img/user.png" alt="user"></div>
+        <div class="col-11">
+            <div>{{comment.user}}</div>
+            <small>
+                <div>{{comment.datetime|naturaltime}}</div>
+            </small>
+            <div class="my-3">{{comment.comment}}</div>
+            {% if user.is_authenticated and request.user == comment.user %}
+            <div class="d-flex justify-content-between my-3">
+                <button class="btn btn-outline-primary btn-sm" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#update{{comment.num}}" aria-expanded="false" aria-controls="collapseExample">
+                    Update Comment
+                </button>
+                <a href="/blog/deletecomment/{{comment.num}}/{{post.num}}"><button type="submit" class="btn btn-outline-danger btn-sm">Delete Comment</button></a>
+            </div>
+            <div class="collapse" id="update{{comment.num}}">
+                <div class="card card-body">
+                    <form action="/blog/updatecomment" method="post"> {% csrf_token %}
+                        <div class="mb-3">
+                            <input type="text" class="form-control" aria-describedby="emailHelp" name="updatedcomment" value="{{comment.comment}}" required>
+                            <input type="hidden" name="commentnum" value="{{comment.num}}">                            
+                            <input type="hidden" name="postnum" value="{{post.num}}">
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-sm">Update Comment</button>
+                    </form>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+
+    </div>
+    {% endfor %}
+
+
+
+</div>
+
+{% endblock body %}

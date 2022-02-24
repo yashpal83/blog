@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+
+{% block title %}Home{% endblock title %}
+
+{% block homeactive %}active{% endblock homeactive %}
+
+{% block body %}
+
+
+
+
+<div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+    <div class="carousel-indicators">
+        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active"
+            aria-current="true" aria-label="Slide 1"></button>
+        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1"
+            aria-label="Slide 2"></button>
+        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2"
+            aria-label="Slide 3"></button>
+    </div>
+    <div class="carousel-inner">
+        <div class="carousel-item active">
+            <img src="https://the-oop.com/wp-content/uploads/2018/11/Self-hosted-blog.jpg" class="d-block w-100"
+                alt="image1">
+        </div>
+        <div class="carousel-item">
+            <img src="https://clopinitiative.org/sites/default/files/banner-blog.png" class="d-block w-100"
+                alt="image2">
+        </div>
+        <div class="carousel-item">
+            <img src="https://projexia.ca/wp-content/uploads/2021/02/Photo-Blog-DAS-1200x400-1.png"
+                class="d-block w-100" alt="image3">
+        </div>
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators"
+        data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators"
+        data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+    </button>
+</div>
+<br>
+
+
+<div class="container marketing my-5 ">
+
+    <!-- START THE FEATURETTES -->
+
+    {% for post in posts %}
+    <hr class="featurette-divider my-4">
+
+    <div class="row featurette d-flex align-items-center border border-5 p-3 px-0 position-relative">
+        <div class="col-md-8">
+            <h2 class="featurette-heading">{{post.title}}</h2>
+            <p class="blog-post-meta">{{post.datetime}}</p>
+            <p class="lead">{{post.content|truncatechars:200}}</p>
+                <a href="/blog/readingpost/{{post.num}}" class="stretched-link">Continue reading</a>
+        </div>
+        <div class="col-md-4">
+        
+        </div>
+    </div>
+    <hr class="featurette-divider">
+    {% endfor %}
+
+
+    
+
+    <!-- /END THE FEATURETTES -->
+
+</div>
+
+
+
+
+
+
+
+
+
+
+{% endblock body %}
